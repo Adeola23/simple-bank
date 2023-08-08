@@ -22,11 +22,20 @@ func NewStore ( db *sql.DB) *Store {
 
 
 func (store *Store) execTx(ctx context.Context, fn  func(*Queries) error ) error {
+
+
 	tx, err := store.db.BeginTx(ctx, nil)
 
+
+
+
 	if err != nil {
+		
 		return err
+		
 	}
+
+	
 
 	q := New(tx)
 	err = fn(q)
@@ -54,13 +63,15 @@ type TransferTxResult struct {
 	FromAccount Account `json:"from_account"`
 	ToAccount Account `json:"to_account"`
 	FromEntry Entry `json:"from_entry"`
-	ToEntry Entry `json:"from_entry"`
+	ToEntry Entry `json:"to_entry"`
 }
 
 func (store *Store) TransferTx (ctx context.Context, arg TransferTxParams) (TransferTxResult, error){
 	var result TransferTxResult
 
 	err := store.execTx(ctx, func(q *Queries) error{
+
+		
 		var err error
 		result.Transfer, err = q.CreateTransfer(ctx, CreateTransferParams{
 			FromAccountID: arg.FromAccountID,
@@ -91,6 +102,8 @@ func (store *Store) TransferTx (ctx context.Context, arg TransferTxParams) (Tran
 		}
 		return nil
 	})
+
+	
 
 	return result, err
    
