@@ -12,6 +12,7 @@ INSERT INTO transfers (
 SELECT * FROM transfers
 WHERE id = $1 LIMIT 1;
 
+
 -- name: ListTransfers :many
 SELECT * FROM transfers
 WHERE 
